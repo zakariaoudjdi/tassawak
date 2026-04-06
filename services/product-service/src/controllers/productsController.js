@@ -40,6 +40,7 @@ async function createProduct(req, res, next) {
   try {
     const { name, description, price, image, category, stock } = req.body;
     const product = await Product.create({ name, description, price, image, category, stock });
+    // Publish to Kafka asynchronously, but don't block the response
     await publishProductCreated(product.toJSON()).catch((err) =>
       console.error('Kafka publish failed:', err.message)
     );
