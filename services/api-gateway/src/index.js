@@ -16,7 +16,7 @@ app.use(cors({ origin: FRONTEND_ORIGIN }));
 app.use(requestLogger);
 
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
-
+// Proxy requests to the product service
 app.use(
   "/api/products",
   createProxyMiddleware({
