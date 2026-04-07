@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tassawak-config
+  namespace: tassawak
+data:
+  # API Gateway
+  PORT_GATEWAY: "3001"
+  PRODUCT_SERVICE_URL: "http://product-service:3002"
+  FRONTEND_ORIGIN: "http://frontend"
+  # Product Service
+  PORT_PRODUCT: "3002"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "tassawak_products"
+  DB_USER: "postgres"
+  # Kafka (shared)
+  KAFKA_BROKER: "kafka:29092"
+  # PostgreSQL
+  POSTGRES_DB: "tassawak_products"
+  POSTGRES_USER: "postgres"
+  # Zookeeper
+  ZOOKEEPER_CLIENT_PORT: "2181"
+  ZOOKEEPER_TICK_TIME: "2000"
+  # Kafka broker config
+  KAFKA_BROKER_ID: "1"
+  KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+  KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:29092"
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT"
+  KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+  KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
