@@ -1,5 +1,5 @@
-import Product from '../models/Product.js';
-import { publishProductCreated } from '../kafka/producer.js';
+import Product from "../models/Product.js";
+import { publishProductCreated } from "../kafka/producer.js";
 
 async function listProducts(req, res, next) {
   try {
@@ -10,7 +10,7 @@ async function listProducts(req, res, next) {
     const { count, rows } = await Product.findAndCountAll({
       limit,
       offset,
-      order: [['createdAt', 'DESC']],
+      order: [["createdAt", "DESC"]],
     });
 
     res.json({
@@ -28,7 +28,7 @@ async function getProduct(req, res, next) {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ error: "Product not found" });
     }
     res.json(product);
   } catch (err) {
@@ -39,10 +39,18 @@ async function getProduct(req, res, next) {
 async function createProduct(req, res, next) {
   try {
     const { name, description, price, image, category, stock } = req.body;
-    const product = await Product.create({ name, description, price, image, category, stock });
+    // Input validation can be added here (e.g., using Joi or express-validator)
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      image,
+      category,
+      stock,
+    });
     // Publish to Kafka asynchronously, but don't block the response
     await publishProductCreated(product.toJSON()).catch((err) =>
-      console.error('Kafka publish failed:', err.message)
+      console.error("Kafka publish failed:", err.message),
     );
     res.status(201).json(product);
   } catch (err) {
